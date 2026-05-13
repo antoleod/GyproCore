@@ -5,6 +5,7 @@ import { useT } from "../hooks/useT";
 import { MeasurementCard } from "../components/workspace/MeasurementCard";
 import { ZoneHeader } from "../components/workspace/ZoneHeader";
 import { CollapsibleSection } from "../components/ui/CollapsibleSection";
+import { AddAnotherRoomModal } from "../components/ui/AddAnotherRoomModal";
 import { Layers, X } from "lucide-react";
 import { calculateMeasurement } from "../engine/measurementCalculations";
 import type { CalculatedZone } from "../types/calculation";
@@ -21,6 +22,7 @@ export function WorkspacePage() {
   const [expandedZones, setExpandedZones] = useState<Set<string>>(new Set());
   const [draftZoneId, setDraftZoneId] = useState<string | null>(null);
   const [draftMeasurement, setDraftMeasurement] = useState<RoomMeasurement | null>(null);
+  const [repeatZoneId, setRepeatZoneId] = useState<string | null>(null);
 
   const handleAddMeasurement = (zoneId: string) => {
     const zone = zones.find((item) => item.zone.id === zoneId);
@@ -65,6 +67,7 @@ export function WorkspacePage() {
     }
 
     closeDraft();
+    setRepeatZoneId(draftZoneId);
   };
 
   const draftZone = draftZoneId ? zones.find((zone) => zone.zone.id === draftZoneId) : undefined;
@@ -136,6 +139,16 @@ export function WorkspacePage() {
           onSave={saveDraft}
         />
       ) : null}
+
+      <AddAnotherRoomModal
+        isOpen={Boolean(repeatZoneId)}
+        onAddAnother={() => {
+          const zoneId = repeatZoneId;
+          setRepeatZoneId(null);
+          if (zoneId) handleAddMeasurement(zoneId);
+        }}
+        onFinish={() => setRepeatZoneId(null)}
+      />
     </div>
   );
 }

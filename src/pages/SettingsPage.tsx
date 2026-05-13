@@ -37,7 +37,7 @@ export function SettingsPage() {
       <section className="rounded-lg border border-white/10 bg-white/[0.04] p-4">
         <h2 className="mb-3 text-sm font-semibold text-white">{t.settings_language_heading}</h2>
         <div className="flex flex-wrap gap-2">
-          {(["pt", "en", "es"] as const).map((lang) => (
+          {(["pt", "en", "es", "fr", "nl"] as const).map((lang) => (
             <button
               key={lang}
               onClick={() => setLanguage(lang)}
@@ -47,7 +47,7 @@ export function SettingsPage() {
                   : "border border-white/10 text-white hover:bg-white/5"
               }`}
             >
-              {lang === "pt" ? t.settings_language_pt : lang === "en" ? t.settings_language_en : t.settings_language_es}
+              {lang === "pt" ? t.settings_language_pt : lang === "en" ? t.settings_language_en : lang === "es" ? t.settings_language_es : lang === "fr" ? t.settings_language_fr : t.settings_language_nl}
             </button>
           ))}
         </div>

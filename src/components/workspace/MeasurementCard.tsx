@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { Minus, Plus, Trash2 } from "lucide-react";
 import { useT } from "../../hooks/useT";
 import { CalculatedMeasurement } from "../../types/calculation";
 import { formatNumber } from "../../utils/format";
@@ -10,6 +10,7 @@ interface MeasurementCardProps {
 }
 
 const numberValue = (value: string) => Number.parseFloat(value) || 0;
+const clampNumber = (value: number) => Math.max(0, Math.round(value * 100) / 100);
 
 export function MeasurementCard({ measurement, onUpdate, onDelete }: MeasurementCardProps) {
   const t = useT();
@@ -41,28 +42,16 @@ export function MeasurementCard({ measurement, onUpdate, onDelete }: Measurement
 
       {/* Measurements - vertical layout for mobile */}
       <div className="space-y-2">
-        <label className="space-y-1">
-          <span className="text-xs font-medium uppercase text-slate-500">{t.card_label_side1}</span>
-          <input
-            className="field w-full text-center"
-            type="number"
-            inputMode="decimal"
-            step="0.01"
-            value={measurement.side1}
-            onChange={(e) => onUpdate(measurement.id, { side1: numberValue(e.target.value) })}
-          />
-        </label>
-        <label className="space-y-1">
-          <span className="text-xs font-medium uppercase text-slate-500">{t.card_label_side2}</span>
-          <input
-            className="field w-full text-center"
-            type="number"
-            inputMode="decimal"
-            step="0.01"
-            value={measurement.side2}
-            onChange={(e) => onUpdate(measurement.id, { side2: numberValue(e.target.value) })}
-          />
-        </label>
+        <DimensionStepper
+          label={t.card_label_side1}
+          value={measurement.side1}
+          onChange={(value) => onUpdate(measurement.id, { side1: value })}
+        />
+        <DimensionStepper
+          label={t.card_label_side2}
+          value={measurement.side2}
+          onChange={(value) => onUpdate(measurement.id, { side2: value })}
+        />
         <label className="space-y-1">
           <span className="text-xs font-medium uppercase text-slate-500">{t.card_label_subtract}</span>
           <input
@@ -96,5 +85,54 @@ export function MeasurementCard({ measurement, onUpdate, onDelete }: Measurement
         </div>
       </div>
     </div>
+  );
+}
+
+function DimensionStepper({ label, value, onChange }: { label: string; value: number; onChange: (value: number) => void }) {
+  const adjust = (delta: number) => onChange(clampNumber(value + delta));
+
+  return (
+    <label className="space-y-1">
+      <span className="text-xs font-medium uppercase text-slate-500">{label}</span>
+      <div className="grid grid-cols-[44px_1fr_44px] gap-2">
+        <button
+          className="flex min-h-11 items-center justify-center rounded-lg border border-white/10 bg-slate-900 text-slate-200 hover:bg-white/5"
+          type="button"
+          onClick={() => adjust(-0.1)}
+          aria-label={`Diminuir ${label}`}
+        >
+          <Minus size={16} />
+        </button>
+        <input
+          className="field w-full text-center text-lg font-semibold"
+          type="number"
+          inputMode="decimal"
+          step="0.01"
+          value={value}
+          onFocus={(event) => event.currentTarget.select()}
+          onChange={(event) => onChange(numberValue(event.target.value))}
+        />
+        <button
+          className="flex min-h-11 items-center justify-center rounded-lg border border-white/10 bg-slate-900 text-slate-200 hover:bg-white/5"
+          type="button"
+          onClick={() => adjust(0.1)}
+          aria-label={`Aumentar ${label}`}
+        >
+          <Plus size={16} />
+        </button>
+      </div>
+      <div className="grid grid-cols-4 gap-1">
+        {[0.1, 0.5, 1, 2].map((increment) => (
+          <button
+            key={increment}
+            className="rounded-md border border-white/10 px-2 py-1 text-xs text-slate-300 hover:bg-white/5"
+            type="button"
+            onClick={() => adjust(increment)}
+          >
+            +{increment}
+          </button>
+        ))}
+      </div>
+    </label>
   );
 }

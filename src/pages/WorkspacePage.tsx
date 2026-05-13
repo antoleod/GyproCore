@@ -26,7 +26,7 @@ export function WorkspacePage() {
       <div>
         <h1 className="text-3xl font-bold text-white">Estimativa de Forro</h1>
         <p className="mt-2 text-slate-400">
-          Edite as medidas de cada local. Perímetro, área, F47 e quantidades são calculadas em tempo real.
+          Edite as pieces de cada local. Periferique, TOTAL M², Plagyp e quantidades são calculadas em tempo real.
         </p>
       </div>
 
@@ -42,26 +42,26 @@ export function WorkspacePage() {
           {/* Zone Summary */}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 rounded-lg border border-white/10 bg-white/[0.04] p-5 space-y-4">
             <div className="space-y-1">
-              <p className="text-xs font-medium uppercase text-slate-500">Área Total</p>
+              <p className="text-xs font-medium uppercase text-slate-500">TOTAL M²</p>
               <p className="text-xl font-bold text-white">{zone.totalArea.toFixed(2)} m²</p>
             </div>
             <div className="space-y-1">
-              <p className="text-xs font-medium uppercase text-slate-500">Guias</p>
+              <p className="text-xs font-medium uppercase text-slate-500">Periferique</p>
               <p className="text-xl font-bold text-white">{zone.totalGuides.toFixed(2)} ml</p>
             </div>
             <div className="space-y-1">
-              <p className="text-xs font-medium uppercase text-slate-500">F47</p>
+              <p className="text-xs font-medium uppercase text-slate-500">Plagyp</p>
               <p className="text-xl font-bold text-white">{zone.totalF47.toFixed(2)} ml</p>
             </div>
             <div className="space-y-1">
-              <p className="text-xs font-medium uppercase text-slate-500">Medidas</p>
+              <p className="text-xs font-medium uppercase text-slate-500">Pieces</p>
               <p className="text-xl font-bold text-amber-300">{zone.measurements.length}</p>
             </div>
           </div>
 
           {/* Measurements - collapsible on mobile */}
           <CollapsibleSection
-            title={`${zone.measurements.length} ${zone.measurements.length === 1 ? "Medida" : "Medidas"}`}
+            title={`${zone.measurements.length} ${zone.measurements.length === 1 ? "Piece" : "Pieces"}`}
             icon={<Layers size={16} />}
             defaultOpen={zone.measurements.length === 0 || expandedZones.has(zone.zone.id)}
           >

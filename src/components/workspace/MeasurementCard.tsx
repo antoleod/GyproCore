@@ -76,15 +76,15 @@ export function MeasurementCard({ measurement, onUpdate, onDelete }: Measurement
       {/* Results - always visible */}
       <div className="grid grid-cols-2 gap-2 pt-3 border-t border-white/10">
         <div className="space-y-1">
-          <p className="text-xs font-medium uppercase text-slate-500">Perímetro</p>
+          <p className="text-xs font-medium uppercase text-slate-500">Periferique</p>
           <p className="text-lg font-semibold text-amber-300">{formatNumber(measurement.perimeter)} m</p>
         </div>
         <div className="space-y-1">
-          <p className="text-xs font-medium uppercase text-slate-500">Área</p>
+          <p className="text-xs font-medium uppercase text-slate-500">TOTAL M²</p>
           <p className="text-lg font-semibold text-white">{formatNumber(measurement.area)} m²</p>
         </div>
         <div className="space-y-1">
-          <p className="text-xs font-medium uppercase text-slate-500">F47</p>
+          <p className="text-xs font-medium uppercase text-slate-500">Plagyp</p>
           <p className="text-sm text-slate-200">{formatNumber(measurement.f47Ml)} ml</p>
         </div>
         <div className="space-y-1">

@@ -5,6 +5,7 @@ import { useProjectCalculations } from "../hooks/useProjectCalculations";
 import { useProjectStore } from "../stores/projectStore";
 import { formatCurrency, formatNumber } from "../utils/format";
 import { InlineEditField } from "../components/ui/InlineEditField";
+import type { MaterialKey } from "../types/material";
 
 export function PricingPage() {
   const { project, pricedMaterials, grandTotal, pricePerSquareMeter } = useProjectCalculations();
@@ -21,7 +22,7 @@ export function PricingPage() {
 
   const handleSaveLabel = (key: string) => {
     if (tempLabel.trim()) {
-      updateMaterialLabel(key, tempLabel.trim());
+      updateMaterialLabel(key as MaterialKey, tempLabel.trim());
     }
     setEditingLabel(null);
   };

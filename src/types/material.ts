@@ -1,4 +1,4 @@
-export type Currency = "EUR" | "BRL";
+export type Currency = "EUR" | "BRL" | "USD";
 
 export type MaterialKey =
   | "chapa"

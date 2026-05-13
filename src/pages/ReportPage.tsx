@@ -1,9 +1,21 @@
 import { Download } from "lucide-react";
 import { useProjectCalculations } from "../hooks/useProjectCalculations";
 import { formatCurrency, formatNumber } from "../utils/format";
+import { exportProjectToExcel } from "../services/excelExporter";
 
 export function ReportPage() {
-  const { project, totals, pricedMaterials, grandTotal, pricePerSquareMeter } = useProjectCalculations();
+  const { project, zones, totals, pricedMaterials, grandTotal, pricePerSquareMeter } = useProjectCalculations();
+
+  const handleExportExcel = () => {
+    exportProjectToExcel({
+      project,
+      zones,
+      totals,
+      pricedMaterials,
+      grandTotal,
+      pricePerSquareMeter,
+    });
+  };
 
   return (
     <div className="space-y-5">
@@ -12,10 +24,16 @@ export function ReportPage() {
           <h1 className="text-2xl font-semibold text-white">Resumo / Presupuesto</h1>
           <p className="mt-1 text-sm text-slate-400">Preview pronto para evoluir para exportacao PDF.</p>
         </div>
-        <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 py-3 text-sm font-semibold text-slate-950">
-          <Download size={16} />
-          Exportar PDF
-        </button>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <button onClick={handleExportExcel} className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700">
+            <Download size={16} />
+            Exportar Excel
+          </button>
+          <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 py-3 text-sm font-semibold text-slate-950 hover:bg-amber-600">
+            <Download size={16} />
+            Exportar PDF
+          </button>
+        </div>
       </div>
 
       <section className="rounded-lg bg-white p-5 text-slate-950">

@@ -8,6 +8,7 @@ const numberValue = (value: string) => Number.parseFloat(value) || 0;
 export function WorkspacePage() {
   const { zones } = useProjectCalculations();
   const updateMeasurement = useProjectStore((state) => state.updateMeasurement);
+  const updateZone = useProjectStore((state) => state.updateZone);
   const addMeasurement = useProjectStore((state) => state.addMeasurement);
 
   return (
@@ -19,11 +20,30 @@ export function WorkspacePage() {
 
       {zones.map((zone) => (
         <section key={zone.zone.id} className="rounded-lg border border-white/10 bg-white/[0.04] p-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-white">{zone.zone.name}</h2>
-              <p className="text-sm text-slate-400">
-                {zone.zone.calculationType} · espacamento {zone.zone.spacing} · {formatNumber(zone.totalArea)} m2
+          <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
+            <div className="grid flex-1 gap-3 sm:grid-cols-[minmax(220px,1fr)_repeat(4,110px)]">
+              <label className="space-y-1">
+                <span className="text-xs font-medium uppercase tracking-wide text-slate-500">B4 Localizacao</span>
+                <input className="field w-full" value={zone.zone.name} onChange={(event) => updateZone(zone.zone.id, { name: event.target.value })} />
+              </label>
+              <label className="space-y-1">
+                <span className="text-xs font-medium uppercase tracking-wide text-slate-500">Espçto</span>
+                <input className="field w-full" type="number" step="0.01" value={zone.zone.spacing} onChange={(event) => updateZone(zone.zone.id, { spacing: numberValue(event.target.value) })} />
+              </label>
+              <label className="space-y-1">
+                <span className="text-xs font-medium uppercase tracking-wide text-slate-500">Coef. %</span>
+                <input className="field w-full" type="number" step="0.01" value={zone.zone.coefficient * 100} onChange={(event) => updateZone(zone.zone.id, { coefficient: numberValue(event.target.value) / 100 })} />
+              </label>
+              <label className="space-y-1">
+                <span className="text-xs font-medium uppercase tracking-wide text-slate-500">Qtd. Pav.</span>
+                <input className="field w-full" type="number" step="1" value={zone.zone.floorQuantity} onChange={(event) => updateZone(zone.zone.id, { floorQuantity: numberValue(event.target.value) })} />
+              </label>
+              <label className="space-y-1">
+                <span className="text-xs font-medium uppercase tracking-wide text-slate-500">Qtd. Und.</span>
+                <input className="field w-full" type="number" step="1" value={zone.zone.unitQuantity} onChange={(event) => updateZone(zone.zone.id, { unitQuantity: numberValue(event.target.value) })} />
+              </label>
+              <p className="text-sm text-slate-400 sm:col-span-full">
+                {zone.zone.calculationType} · {formatNumber(zone.totalArea)} m2
               </p>
             </div>
             <button

@@ -2,8 +2,8 @@
   "name": "GyproCore",
   "short_name": "GyproCore",
   "description": "Construction estimation for Gyproc, forro, materials, and quotations.",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/GyproCore/",
+  "scope": "/GyproCore/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#020617",
@@ -12,13 +12,13 @@
   "lang": "pt-BR",
   "icons": [
     {
-      "src": "/icons/icon-192.png",
+      "src": "/GyproCore/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icons/icon-512.png",
+      "src": "/GyproCore/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

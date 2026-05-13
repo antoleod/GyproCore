@@ -1,11 +1,14 @@
 const CACHE_VERSION = "gyprocore-v1";
+const SCOPE = new URL(self.registration.scope);
+const scopedPath = (path) => new URL(path, SCOPE).pathname;
+const INDEX_PATH = scopedPath("index.html");
 const APP_SHELL = [
-  "/",
-  "/index.html",
-  "/manifest.webmanifest",
-  "/icons/icon-192.png",
-  "/icons/icon-512.png",
-  "/icons/apple-touch-icon.png"
+  scopedPath("./"),
+  INDEX_PATH,
+  scopedPath("manifest.webmanifest"),
+  scopedPath("icons/icon-192.png"),
+  scopedPath("icons/icon-512.png"),
+  scopedPath("icons/apple-touch-icon.png")
 ];
 
 self.addEventListener("install", (event) => {
@@ -35,10 +38,10 @@ self.addEventListener("fetch", (event) => {
       fetch(event.request)
         .then((response) => {
           const copy = response.clone();
-          caches.open(CACHE_VERSION).then((cache) => cache.put("/index.html", copy));
+          caches.open(CACHE_VERSION).then((cache) => cache.put(INDEX_PATH, copy));
           return response;
         })
-        .catch(() => caches.match("/index.html")),
+        .catch(() => caches.match(INDEX_PATH)),
     );
     return;
   }

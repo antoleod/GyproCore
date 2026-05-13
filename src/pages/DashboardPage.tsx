@@ -26,7 +26,7 @@ export function DashboardPage() {
             </p>
           </div>
           <Link
-            to="/workspace"
+            to="/projects/new"
             className="inline-flex items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-400"
           >
             <Calculator size={18} />

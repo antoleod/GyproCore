@@ -3,6 +3,9 @@ import { persist } from "zustand/middleware";
 import type { MaterialKey, MaterialPrice } from "../types/material";
 import type { Project, RoomMeasurement, Zone } from "../types/project";
 import { defaultPrices, demoMeasurements, demoProject, demoZones } from "../services/demoData";
+import { createUniqueSlug } from "../utils/slug";
+
+export type CreateProjectInput = Pick<Project, "companyName" | "clientName" | "projectName" | "address" | "city" | "currency">;
 
 interface ProjectState {
   projects: Project[];
@@ -11,6 +14,8 @@ interface ProjectState {
   prices: MaterialPrice[];
   activeProjectId: string;
   addProject: (project: Project) => void;
+  createProject: (input: CreateProjectInput) => Project;
+  setActiveProject: (projectId: string) => void;
   updateMeasurement: (id: string, patch: Partial<RoomMeasurement>) => void;
   addMeasurement: (zoneId: string) => void;
   updatePrice: (materialKey: MaterialKey, unitPrice: number) => void;
@@ -29,6 +34,24 @@ export const useProjectStore = create<ProjectState>()(
       prices: defaultPrices,
       activeProjectId: demoProject.id,
       addProject: (project) => set((state) => ({ projects: [...state.projects, project], activeProjectId: project.id })),
+      createProject: (input) => {
+        const now = new Date().toISOString();
+        const project: Project = {
+          id: uid(),
+          slug: createUniqueSlug(input.projectName, get().projects.map((item) => item.slug).filter(Boolean)),
+          companyName: input.companyName,
+          clientName: input.clientName,
+          projectName: input.projectName,
+          address: input.address,
+          city: input.city,
+          currency: input.currency,
+          createdAt: now,
+          updatedAt: now,
+        };
+        set((state) => ({ projects: [...state.projects, project], activeProjectId: project.id }));
+        return project;
+      },
+      setActiveProject: (projectId) => set({ activeProjectId: projectId }),
       updateMeasurement: (id, patch) =>
         set((state) => ({
           measurements: state.measurements.map((measurement) =>
@@ -52,8 +75,12 @@ export const useProjectStore = create<ProjectState>()(
       exportSnapshot: () => JSON.stringify(get(), null, 2),
       importSnapshot: (snapshot) => {
         const parsed = JSON.parse(snapshot) as Partial<ProjectState>;
+        const projects = (parsed.projects ?? [demoProject]).map((project) => ({
+          ...project,
+          slug: project.slug ?? createUniqueSlug(project.projectName, []),
+        }));
         set({
-          projects: parsed.projects ?? [demoProject],
+          projects,
           zones: parsed.zones ?? demoZones,
           measurements: parsed.measurements ?? demoMeasurements,
           prices: parsed.prices ?? defaultPrices,

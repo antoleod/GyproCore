@@ -5,6 +5,7 @@ const now = new Date().toISOString();
 
 export const demoProject: Project = {
   id: "project-demo",
+  slug: "levantamento-de-forro",
   companyName: "JK Gyproc Art",
   clientName: "Cliente demo",
   projectName: "Levantamento de Forro",

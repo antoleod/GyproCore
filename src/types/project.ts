@@ -4,6 +4,7 @@ export type CalculationType = "standard" | "corridor" | "custom";
 
 export interface Project {
   id: string;
+  slug: string;
   companyName: string;
   clientName?: string;
   projectName: string;

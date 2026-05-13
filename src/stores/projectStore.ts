@@ -23,13 +23,16 @@ interface ProjectState {
   measurements: RoomMeasurement[];
   prices: MaterialPrice[];
   activeProjectId: string;
+  globalCurrency: "BRL" | "EUR" | "USD";
   addProject: (project: Project) => void;
   createProject: (input: CreateProjectInput) => Project;
   createCalculation: (input: CreateCalculationInput) => Project;
   setActiveProject: (projectId: string) => void;
+  setGlobalCurrency: (currency: "BRL" | "EUR" | "USD") => void;
   updateZone: (id: string, patch: Partial<Zone>) => void;
   updateMeasurement: (id: string, patch: Partial<RoomMeasurement>) => void;
   addMeasurement: (zoneId: string) => void;
+  deleteMeasurement: (id: string) => void;
   updatePrice: (materialKey: MaterialKey, unitPrice: number) => void;
   updateMaterialLabel: (materialKey: MaterialKey, newLabel: string) => void;
   deleteMaterial: (materialKey: MaterialKey) => void;
@@ -47,6 +50,7 @@ export const useProjectStore = create<ProjectState>()(
       measurements: demoMeasurements,
       prices: defaultPrices,
       activeProjectId: demoProject.id,
+      globalCurrency: "BRL",
       addProject: (project) => set((state) => ({ projects: [...state.projects, project], activeProjectId: project.id })),
       createProject: (input) => {
         const now = new Date().toISOString();
@@ -108,6 +112,7 @@ export const useProjectStore = create<ProjectState>()(
         return project;
       },
       setActiveProject: (projectId) => set({ activeProjectId: projectId }),
+      setGlobalCurrency: (currency) => set({ globalCurrency: currency }),
       updateZone: (id, patch) =>
         set((state) => ({
           zones: state.zones.map((zone) => (zone.id === id ? { ...zone, ...patch } : zone)),
@@ -127,6 +132,24 @@ export const useProjectStore = create<ProjectState>()(
               { id: uid(), zoneId, index: nextIndex, label: "", side1: 0, side2: 0, subtract: 0, divisor: 3 },
             ],
           };
+        }),
+      deleteMeasurement: (id) =>
+        set((state) => {
+          const zoneId = state.measurements.find((m) => m.id === id)?.zoneId;
+          const filtered = state.measurements.filter((m) => m.id !== id);
+
+          // Re-index measurements for the same zone
+          if (zoneId) {
+            const reindexed = filtered.map((m) => {
+              if (m.zoneId === zoneId) {
+                const newIndex = filtered.filter((fm) => fm.zoneId === zoneId && fm.index < m.index).length + 1;
+                return { ...m, index: newIndex };
+              }
+              return m;
+            });
+            return { measurements: reindexed };
+          }
+          return { measurements: filtered };
         }),
       updatePrice: (materialKey, unitPrice) =>
         set((state) => ({
@@ -164,6 +187,7 @@ export const useProjectStore = create<ProjectState>()(
         measurements: state.measurements,
         prices: state.prices,
         activeProjectId: state.activeProjectId,
+        globalCurrency: state.globalCurrency,
       }),
     },
   ),

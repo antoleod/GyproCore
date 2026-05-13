@@ -4,7 +4,7 @@ import { calculateProjectTotals, calculateZone } from "../engine/projectCalculat
 import { useProjectStore } from "../stores/projectStore";
 
 export function useProjectCalculations() {
-  const { activeProjectId, projects, zones, measurements, prices } = useProjectStore();
+  const { activeProjectId, projects, zones, measurements, prices, globalCurrency } = useProjectStore();
 
   return useMemo(() => {
     const project = projects.find((item) => item.id === activeProjectId) ?? projects[0];
@@ -17,13 +17,14 @@ export function useProjectCalculations() {
     const pricePerSquareMeter = calculatePricePerSquareMeter(grandTotal, totals.totalArea);
 
     return {
-      project,
+      project: { ...project, currency: globalCurrency },
       zones: calculatedZones,
       totals,
       quantities,
       pricedMaterials,
       grandTotal,
       pricePerSquareMeter,
+      currency: globalCurrency,
     };
-  }, [activeProjectId, projects, zones, measurements, prices]);
+  }, [activeProjectId, projects, zones, measurements, prices, globalCurrency]);
 }

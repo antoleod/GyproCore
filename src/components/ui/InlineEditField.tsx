@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Check, X } from "lucide-react";
+import { Check, X, Pencil } from "lucide-react";
 
 interface InlineEditFieldProps {
   label: string;
@@ -42,7 +42,7 @@ export function InlineEditField({ label, value, onChange, type = "text", step }:
   if (isEditing) {
     return (
       <div className="space-y-2">
-        <label className="text-xs font-medium uppercase tracking-wider text-slate-400">{label}</label>
+        <label className="text-xs font-medium uppercase text-slate-400">{label}</label>
         <div className="flex gap-2">
           <input
             ref={inputRef}
@@ -55,17 +55,19 @@ export function InlineEditField({ label, value, onChange, type = "text", step }:
           />
           <button
             onClick={handleSave}
-            className="rounded-lg bg-emerald-600 p-2 text-white hover:bg-emerald-700"
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition"
             type="button"
+            title="Confirmar"
           >
-            <Check size={16} />
+            <Check size={18} />
           </button>
           <button
             onClick={handleCancel}
-            className="rounded-lg border border-white/10 p-2 text-slate-400 hover:bg-white/5"
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg border border-white/10 text-slate-400 hover:bg-white/5 transition"
             type="button"
+            title="Cancelar"
           >
-            <X size={16} />
+            <X size={18} />
           </button>
         </div>
       </div>
@@ -74,13 +76,14 @@ export function InlineEditField({ label, value, onChange, type = "text", step }:
 
   return (
     <div className="space-y-2">
-      <label className="text-xs font-medium uppercase tracking-wider text-slate-400">{label}</label>
+      <label className="text-xs font-medium uppercase text-slate-400">{label}</label>
       <button
         onClick={() => setIsEditing(true)}
         type="button"
-        className="w-full rounded-lg border border-white/10 bg-slate-900/50 px-3 py-2 text-left transition hover:border-amber-400/30 hover:bg-slate-900"
+        className="w-full min-h-[44px] flex items-center justify-between rounded-lg border border-white/10 bg-zinc-800 px-3 py-2 transition hover:border-amber-400/30 hover:bg-zinc-800/80"
       >
         <span className="text-lg font-semibold text-amber-300">{value}</span>
+        <Pencil size={16} className="text-slate-400 flex-shrink-0" />
       </button>
     </div>
   );

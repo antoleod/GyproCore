@@ -1,0 +1,90 @@
+/* One-Handed Experience - Mobile First */
+
+/* Increase touch targets to 48x48px minimum (Apple/Android recommendation) */
+@layer components {
+  /* Input fields - larger padding */
+  .field {
+    @apply min-h-[48px] py-3;
+  }
+
+  /* Buttons - larger touch targets */
+  button {
+    @apply min-h-[48px] min-w-[48px];
+  }
+
+  /* Ensure clickable areas are thumb-friendly */
+  .thumb-safe {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Stack layout for single-hand use */
+  @media (max-width: 640px) {
+    /* Avoid two-column grids on mobile */
+    .grid-auto {
+      @apply grid-cols-1;
+    }
+
+    /* Center content for thumb reach */
+    .mobile-center {
+      @apply flex flex-col items-center;
+    }
+
+    /* Bottom action zone - easier for thumb */
+    .action-zone {
+      @apply fixed bottom-0 left-0 right-0 bg-slate-950 border-t border-white/10 p-4 space-y-2;
+      z-index: 40;
+    }
+
+    /* Reduce top padding on pages - less scrolling needed */
+    .page-header {
+      @apply py-3;
+    }
+
+    /* Larger text for better readability */
+    .mobile-text {
+      @apply text-base;
+    }
+  }
+
+  /* One-handed friendly input wrapper */
+  .input-group {
+    @apply space-y-2;
+  }
+
+  .input-group input {
+    @apply text-lg;
+  }
+}
+
+/* Thumb zones on mobile */
+@media (max-width: 640px) {
+  /* Safe zone: bottom 40% of screen for thumb */
+  .thumb-zone-safe {
+    /* Position at bottom */
+  }
+
+  /* Avoid zone: top 20% (need to reach with thumb) */
+  .thumb-zone-avoid {
+    /* Only if critical */
+  }
+
+  /* Optimal zone: center-bottom (natural thumb reach) */
+  .thumb-zone-optimal {
+    @apply fixed bottom-20 left-0 right-0;
+  }
+}
+
+/* Gesture-friendly spacing */
+.gesture-spacing {
+  @apply space-y-4;
+}
+
+/* No-scroll areas (sticky) */
+.no-scroll {
+  @apply overflow-hidden;
+}
+
+/* Swipe indicators */
+.swipe-hint {
+  @apply text-xs text-slate-500 text-center py-2;
+}

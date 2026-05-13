@@ -75,14 +75,14 @@ export function PricingPage() {
                     />
                     <button
                       onClick={() => handleSaveLabel(item.key)}
-                      className="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-700"
+                      className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg bg-emerald-600 px-3 font-semibold text-white hover:bg-emerald-700 transition"
                       type="button"
                     >
                       Salvar
                     </button>
                     <button
                       onClick={handleCancelLabel}
-                      className="rounded-lg border border-white/10 px-3 py-2 text-xs text-slate-400 hover:bg-white/5"
+                      className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg border border-white/10 px-3 text-slate-400 hover:bg-white/5 transition"
                       type="button"
                     >
                       Cancelar
@@ -106,11 +106,11 @@ export function PricingPage() {
                     </div>
                     <button
                       onClick={() => deleteMaterial(item.key)}
-                      className="rounded-lg border border-red-500/30 bg-red-500/5 px-2 py-2 text-red-400 hover:bg-red-500/10 transition"
+                      className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg border border-red-500/30 bg-red-500/5 text-red-400 hover:bg-red-500/10 transition"
                       title="Eliminar material"
                       type="button"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={18} />
                     </button>
                   </>
                 )}

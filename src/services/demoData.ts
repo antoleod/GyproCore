@@ -1,0 +1,103 @@
+import type { MaterialPrice } from "../types/material";
+import type { Project, RoomMeasurement, Zone } from "../types/project";
+
+const now = new Date().toISOString();
+
+export const demoProject: Project = {
+  id: "project-demo",
+  companyName: "JK Gyproc Art",
+  clientName: "Cliente demo",
+  projectName: "Levantamento de Forro",
+  address: "Obra exemplo",
+  city: "Brasilia",
+  currency: "BRL",
+  createdAt: now,
+  updatedAt: now,
+};
+
+export const demoZones: Zone[] = [
+  {
+    id: "zone-tab1",
+    projectId: demoProject.id,
+    name: "Park Way",
+    floorLabel: "Pavimento 1",
+    spacing: 0.48,
+    coefficient: 0,
+    floorQuantity: 1,
+    unitQuantity: 1,
+    calculationType: "standard",
+  },
+  {
+    id: "zone-tab2",
+    projectId: demoProject.id,
+    name: "Corpo de bombeiros",
+    floorLabel: "Pavimento 1",
+    spacing: 0.4,
+    coefficient: 0,
+    floorQuantity: 1,
+    unitQuantity: 1,
+    calculationType: "standard",
+  },
+  {
+    id: "zone-tab10",
+    projectId: demoProject.id,
+    name: "Corredor",
+    floorLabel: "Pavimento 1",
+    spacing: 0.48,
+    coefficient: 0,
+    floorQuantity: 1,
+    unitQuantity: 1,
+    calculationType: "corridor",
+  },
+];
+
+export const demoMeasurements: RoomMeasurement[] = [
+  { id: "tab1-8", zoneId: "zone-tab1", index: 1, side1: 2.9, side2: 2.4, subtract: 0, divisor: 3 },
+  { id: "tab1-9", zoneId: "zone-tab1", index: 2, side1: 2, side2: 1, subtract: 0, divisor: 3 },
+  { id: "tab1-10", zoneId: "zone-tab1", index: 3, side1: 2, side2: 2.3, subtract: 0, divisor: 3 },
+  { id: "tab1-11", zoneId: "zone-tab1", index: 4, side1: 2.7, side2: 4.8, subtract: 0, divisor: 3 },
+  { id: "tab1-12", zoneId: "zone-tab1", index: 5, side1: 5.9, side2: 5.5, subtract: 0, divisor: 3 },
+  { id: "tab1-13", zoneId: "zone-tab1", index: 6, side1: 2.6, side2: 2.17, subtract: 0, divisor: 3 },
+  { id: "tab1-14", zoneId: "zone-tab1", index: 7, side1: 2.4, side2: 2.8, subtract: 0, divisor: 3 },
+  { id: "tab1-15", zoneId: "zone-tab1", index: 8, side1: 1.2, side2: 1.85, subtract: 0, divisor: 3 },
+  { id: "tab1-16", zoneId: "zone-tab1", index: 9, side1: 2.3, side2: 2.8, subtract: 0, divisor: 3 },
+  { id: "tab1-17", zoneId: "zone-tab1", index: 10, side1: 2.25, side2: 2.25, subtract: 0, divisor: 3 },
+  { id: "tab1-18", zoneId: "zone-tab1", index: 11, side1: 1.8, side2: 1.15, subtract: 0, divisor: 3 },
+  { id: "tab1-19", zoneId: "zone-tab1", index: 12, side1: 3, side2: 3.5, subtract: 0, divisor: 3 },
+  { id: "tab1-20", zoneId: "zone-tab1", index: 13, side1: 4.4, side2: 3, subtract: 0, divisor: 3 },
+  { id: "tab1-21", zoneId: "zone-tab1", index: 14, side1: 3.3, side2: 2.25, subtract: 0, divisor: 3 },
+  { id: "tab1-22", zoneId: "zone-tab1", index: 15, side1: 5.7, side2: 5.1, subtract: 0, divisor: 3 },
+  { id: "tab1-23", zoneId: "zone-tab1", index: 16, side1: 3.3, side2: 4.1, subtract: 0, divisor: 3 },
+  { id: "tab1-24", zoneId: "zone-tab1", index: 17, side1: 4.15, side2: 6.1, subtract: 0, divisor: 3 },
+  { id: "tab1-25", zoneId: "zone-tab1", index: 18, side1: 3.6, side2: 11.8, subtract: 0, divisor: 3 },
+  { id: "tab1-26", zoneId: "zone-tab1", index: 19, side1: 2.5, side2: 2, subtract: 0, divisor: 3 },
+  { id: "tab1-27", zoneId: "zone-tab1", index: 20, side1: 0.3, side2: 2.7, subtract: 0, divisor: 3 },
+  { id: "tab1-28", zoneId: "zone-tab1", index: 21, side1: 0.3, side2: 5.7, subtract: 0, divisor: 3 },
+  { id: "tab1-29", zoneId: "zone-tab1", index: 22, side1: 0.3, side2: 11.8, subtract: 0, divisor: 3 },
+  { id: "tab1-30", zoneId: "zone-tab1", index: 23, side1: 0.2, side2: 5, subtract: 0, divisor: 3 },
+  { id: "tab1-31", zoneId: "zone-tab1", index: 24, side1: 0.2, side2: 2.17, subtract: 0, divisor: 3 },
+  { id: "tab1-32", zoneId: "zone-tab1", index: 25, side1: 0.2, side2: 2.17, subtract: 0, divisor: 3 },
+  { id: "tab2-8", zoneId: "zone-tab2", index: 1, side1: 4, side2: 15.8, subtract: 0, divisor: 4 },
+  { id: "tab2-9", zoneId: "zone-tab2", index: 2, side1: 6.7, side2: 19.4, subtract: 0, divisor: 3 },
+  { id: "tab2-10", zoneId: "zone-tab2", index: 3, side1: 4.1, side2: 4.2, subtract: 0, divisor: 4 },
+  { id: "tab2-11", zoneId: "zone-tab2", index: 4, side1: 2.3, side2: 4.3, subtract: 0, divisor: 4 },
+  { id: "tab2-12", zoneId: "zone-tab2", index: 5, side1: 4, side2: 4, subtract: 0, divisor: 4 },
+  { id: "tab2-13", zoneId: "zone-tab2", index: 6, label: "(3,4x3,4)", side1: 6.9, side2: 5.3, subtract: 0, divisor: 4 },
+  { id: "tab10-8", zoneId: "zone-tab10", index: 1, side1: 8.4, side2: 6, subtract: 0, divisor: 3 },
+  { id: "tab10-9", zoneId: "zone-tab10", index: 2, side1: 4.25, side2: 2.95, subtract: 0, divisor: 3 },
+  { id: "tab10-10", zoneId: "zone-tab10", index: 3, side1: 2.17, side2: 2.03, subtract: 0, divisor: 3 },
+  { id: "tab10-11", zoneId: "zone-tab10", index: 4, side1: 2.17, side2: 2.03, subtract: 0, divisor: 3 },
+  { id: "tab10-12", zoneId: "zone-tab10", index: 5, side1: 4.4, side2: 3.75, subtract: 0, divisor: 3 },
+];
+
+export const defaultPrices: MaterialPrice[] = [
+  { id: "price-chapa", materialKey: "chapa", label: "Chapa", unit: "m2", unitPrice: 7.6 },
+  { id: "price-guia", materialKey: "guia", label: "Guia", unit: "ml", unitPrice: 1.54 },
+  { id: "price-f47", materialKey: "f47", label: "F47", unit: "ml", unitPrice: 1.61 },
+  { id: "price-tirante", materialKey: "tirante", label: "Tirante", unit: "und", unitPrice: 0.38 },
+  { id: "price-suporte", materialKey: "suporteNivelador", label: "Suporte nivelador", unit: "und", unitPrice: 0.86 },
+  { id: "price-t25", materialKey: "t25", label: "Parafuso T25", unit: "milheiro", unitPrice: 24.81 },
+  { id: "price-mm", materialKey: "mm", label: "Parafuso MM", unit: "und", unitPrice: 0.38 },
+  { id: "price-massa", materialKey: "massa", label: "Massa", unit: "saco 20kg", unitPrice: 30.43 },
+  { id: "price-fita", materialKey: "fita", label: "Fita", unit: "rolo 150ml", unitPrice: 15.55 },
+];

@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+.env.*
+*.local
+*.tsbuildinfo
+analyze-*.mjs
+extract-*.mjs
+vite-dev.*.log

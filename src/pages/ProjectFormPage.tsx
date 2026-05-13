@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useProjectStore } from "../stores/projectStore";
+import { useT } from "../hooks/useT";
 import { useLastMeasurement } from "../hooks/useLastMeasurement";
 import { createUniqueSlug } from "../utils/slug";
 import { suggestProjectName, getExistingProjectNames } from "../utils/nameSuggestion";
@@ -12,22 +13,25 @@ import { InlineEditField } from "../components/ui/InlineEditField";
 import { CollapsibleSection } from "../components/ui/CollapsibleSection";
 import { AddAnotherRoomModal } from "../components/ui/AddAnotherRoomModal";
 
-const calculationSchema = z.object({
-  locationName: z.string().min(2, "Informe o nome da localizacao"),
-  spacing: z.coerce.number().positive("Espacamento deve ser maior que zero"),
-  coefficientPercent: z.coerce.number().min(0, "Coeficiente nao pode ser negativo"),
-  floorQuantity: z.coerce.number().positive("Qtd. Pav. deve ser maior que zero"),
-  unitQuantity: z.coerce.number().positive("Qtd. Und. deve ser maior que zero"),
-  localName: z.string().min(1, "Informe o nome do local"),
-  side1: z.coerce.number().positive("Lado 1 deve ser maior que zero"),
-  side2: z.coerce.number().positive("Lado 2 deve ser maior que zero"),
-});
+function createCalculationSchema(t: ReturnType<typeof useT>) {
+  return z.object({
+    locationName: z.string().min(2, t.form_validation_locationName),
+    spacing: z.coerce.number().positive(t.form_validation_spacing),
+    coefficientPercent: z.coerce.number().min(0, t.form_validation_coefficient),
+    floorQuantity: z.coerce.number().positive(t.form_validation_floorQty),
+    unitQuantity: z.coerce.number().positive(t.form_validation_unitQty),
+    localName: z.string().min(1, t.form_validation_localName),
+    side1: z.coerce.number().positive(t.form_validation_side1),
+    side2: z.coerce.number().positive(t.form_validation_side2),
+  });
+}
 
-type CalculationFormInput = z.input<typeof calculationSchema>;
-type CalculationFormValues = z.output<typeof calculationSchema>;
+type CalculationFormInput = z.input<ReturnType<typeof createCalculationSchema>>;
+type CalculationFormValues = z.output<ReturnType<typeof createCalculationSchema>>;
 
 export function ProjectFormPage() {
   const navigate = useNavigate();
+  const t = useT();
   const projects = useProjectStore((state) => state.projects);
   const createCalculation = useProjectStore((state) => state.createCalculation);
   const existingSlugs = projects.map((project) => project.slug).filter(Boolean);
@@ -42,6 +46,8 @@ export function ProjectFormPage() {
 
   const [showModal, setShowModal] = useState(false);
   const [tempProjectData, setTempProjectData] = useState<any>(null);
+
+  const calculationSchema = useMemo(() => createCalculationSchema(t), [t]);
 
   const {
     register,
@@ -131,11 +137,11 @@ export function ProjectFormPage() {
       <div className="space-y-2 text-center sm:text-left">
         <p className="inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-xs font-medium text-amber-300">
           <Calculator size={14} />
-          Novo Cálculo
+          {t.form_badge}
         </p>
-        <h1 className="mt-3 text-3xl font-bold text-white">Bem-vindo ao GyproCore</h1>
+        <h1 className="mt-3 text-3xl font-bold text-white">{t.form_heading}</h1>
         <p className="mt-2 text-slate-400">
-          Vamos começar definindo o local de trabalho. Você pode ajustar os parâmetros depois se necessário.
+          {t.form_subtitle}
         </p>
       </div>
 
@@ -146,15 +152,15 @@ export function ProjectFormPage() {
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 text-sm font-semibold text-slate-950">
               1
             </span>
-            <h2 className="text-lg font-semibold text-white">Onde você está trabalhando?</h2>
+            <h2 className="text-lg font-semibold text-white">{t.form_step1_heading}</h2>
           </div>
 
           <div className="space-y-4">
             <label className="space-y-2">
-              <span className="text-sm font-medium text-slate-200">Nome do local</span>
+              <span className="text-sm font-medium text-slate-200">{t.form_step1_locationLabel}</span>
               <input
                 className="field w-full"
-                placeholder="Ex: Corpo de bombeiros, Comfort Tag Flat..."
+                placeholder={t.form_step1_locationPlaceholder}
                 {...register("locationName")}
               />
               {errors.locationName && (
@@ -166,11 +172,11 @@ export function ProjectFormPage() {
               <div className="rounded-lg bg-blue-400/5 border border-blue-400/20 p-3 space-y-2">
                 <div className="flex items-center gap-2">
                   <Lightbulb size={14} className="text-blue-300" />
-                  <p className="text-xs font-medium text-blue-300">Nome já existe</p>
+                  <p className="text-xs font-medium text-blue-300">{t.form_step1_duplicateHeading}</p>
                 </div>
                 <div className="flex items-center justify-between gap-2">
                   <p className="text-sm text-slate-300">
-                    Sugerimos: <span className="font-semibold text-blue-300">{suggestedName}</span>
+                    {t.form_step1_duplicateSuggest.replace("{name}", suggestedName)} <span className="font-semibold text-blue-300"></span>
                   </p>
                   <button
                     type="button"
@@ -184,7 +190,7 @@ export function ProjectFormPage() {
                     }}
                     className="text-xs font-semibold text-blue-300 hover:text-blue-200 transition px-2 py-1 rounded hover:bg-blue-400/10"
                   >
-                    Usar
+                    {t.form_step1_useBtn}
                   </button>
                 </div>
               </div>
@@ -192,7 +198,7 @@ export function ProjectFormPage() {
 
             {locationName && !suggestedName && (
               <div className="rounded-lg bg-amber-400/5 border border-amber-400/20 p-3">
-                <p className="text-xs uppercase text-slate-400 mb-1">Identificador único</p>
+                <p className="text-xs uppercase text-slate-400 mb-1">{t.form_step1_uniqueId}</p>
                 <p className="font-mono text-sm text-amber-300">{slug}</p>
               </div>
             )}
@@ -206,7 +212,7 @@ export function ProjectFormPage() {
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 text-sm font-semibold text-slate-950">
                 2
               </span>
-              <h2 className="text-lg font-semibold text-white">Primeira medida</h2>
+              <h2 className="text-lg font-semibold text-white">{t.form_step2_heading}</h2>
             </div>
             {lastMeasurement && (
               <button
@@ -217,29 +223,29 @@ export function ProjectFormPage() {
                   setValue("side2", 0);
                 }}
                 className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 transition"
-                title="Limpar últimos valores"
+                title={t.form_step2_clearTitle}
               >
                 <RotateCcw size={14} />
-                Limpar
+                {t.form_step2_clearBtn}
               </button>
             )}
           </div>
 
           <p className="mb-4 text-sm text-slate-400">
-            Adicione o nome do primeiro cômodo e suas dimensões (comprimento e largura).
+            {t.form_step2_description}
             {lastMeasurement && (
               <span className="block mt-2 text-xs text-emerald-300">
-                ✓ Usando últimas medidas: {lastMeasurement.localName} ({lastMeasurement.side1}m × {lastMeasurement.side2}m)
+                {t.form_step2_lastMeasure.replace("{name}", lastMeasurement.localName).replace("{s1}", String(lastMeasurement.side1)).replace("{s2}", String(lastMeasurement.side2))}
               </span>
             )}
           </p>
 
           <div className="space-y-4">
             <label className="space-y-2">
-              <span className="text-sm font-medium text-slate-200">Nome do cômodo</span>
+              <span className="text-sm font-medium text-slate-200">{t.form_step2_roomLabel}</span>
               <input
                 className="field w-full"
-                placeholder="Ex: Sala, Corredor, Quarto..."
+                placeholder={t.form_step2_roomPlaceholder}
                 {...register("localName")}
               />
               {errors.localName && (
@@ -249,7 +255,7 @@ export function ProjectFormPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <label className="space-y-2">
-                <span className="text-sm font-medium text-slate-200">Comprimento (m)</span>
+                <span className="text-sm font-medium text-slate-200">{t.form_step2_side1Label}</span>
                 <input
                   className="field w-full"
                   type="number"
@@ -262,7 +268,7 @@ export function ProjectFormPage() {
                 )}
               </label>
               <label className="space-y-2">
-                <span className="text-sm font-medium text-slate-200">Largura (m)</span>
+                <span className="text-sm font-medium text-slate-200">{t.form_step2_side2Label}</span>
                 <input
                   className="field w-full"
                   type="number"
@@ -280,38 +286,38 @@ export function ProjectFormPage() {
 
         {/* Step 3: Parâmetros (Colapsível) */}
         <CollapsibleSection
-          title="Parâmetros do Projeto"
+          title={t.form_step3_sectionTitle}
           icon={<Settings size={17} />}
           variant="amber"
           defaultOpen={false}
         >
           <p className="mb-4 text-xs text-slate-400">
-            Estes valores vêm do seu levantamento. Clique em qualquer número para editar.
+            {t.form_step3_hint}
           </p>
           <div className="grid gap-3 sm:grid-cols-4">
             <InlineEditField
-              label="Espçto (m)"
+              label={t.form_step3_spacing}
               value={params.spacing}
               onChange={(val) => setParams({ ...params, spacing: val as number })}
               type="number"
               step="0.01"
             />
             <InlineEditField
-              label="Coef. %"
+              label={t.form_step3_coef}
               value={params.coefficientPercent}
               onChange={(val) => setParams({ ...params, coefficientPercent: val as number })}
               type="number"
               step="0.01"
             />
             <InlineEditField
-              label="Qtd. Pav."
+              label={t.form_step3_floors}
               value={params.floorQuantity}
               onChange={(val) => setParams({ ...params, floorQuantity: val as number })}
               type="number"
               step="1"
             />
             <InlineEditField
-              label="Qtd. Und."
+              label={t.form_step3_units}
               value={params.unitQuantity}
               onChange={(val) => setParams({ ...params, unitQuantity: val as number })}
               type="number"
@@ -326,7 +332,7 @@ export function ProjectFormPage() {
           disabled={isSubmitting}
           className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-amber-500 px-6 py-4 text-base font-semibold text-slate-950 transition hover:bg-amber-400 disabled:opacity-60 sm:w-auto"
         >
-          Começar Cálculo
+          {t.form_submitBtn}
           <ArrowRight size={18} />
         </button>
       </form>

@@ -1,4 +1,5 @@
 import { Trash2 } from "lucide-react";
+import { useT } from "../../hooks/useT";
 import { CalculatedMeasurement } from "../../types/calculation";
 import { formatNumber } from "../../utils/format";
 
@@ -11,6 +12,8 @@ interface MeasurementCardProps {
 const numberValue = (value: string) => Number.parseFloat(value) || 0;
 
 export function MeasurementCard({ measurement, onUpdate, onDelete }: MeasurementCardProps) {
+  const t = useT();
+
   return (
     <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 space-y-3">
       {/* Header with index and delete */}
@@ -21,7 +24,7 @@ export function MeasurementCard({ measurement, onUpdate, onDelete }: Measurement
           </span>
           <input
             className="field flex-1"
-            placeholder="Nome do local"
+            placeholder={t.card_placeholder_name}
             value={measurement.label ?? ""}
             onChange={(e) => onUpdate(measurement.id, { label: e.target.value })}
           />
@@ -30,7 +33,7 @@ export function MeasurementCard({ measurement, onUpdate, onDelete }: Measurement
           onClick={() => onDelete(measurement.id)}
           className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg border border-red-500/30 bg-red-500/5 text-red-400 hover:bg-red-500/10 transition"
           type="button"
-          title="Eliminar medida"
+          title={t.card_btn_delete}
         >
           <Trash2 size={18} />
         </button>
@@ -39,7 +42,7 @@ export function MeasurementCard({ measurement, onUpdate, onDelete }: Measurement
       {/* Measurements - vertical layout for mobile */}
       <div className="space-y-2">
         <label className="space-y-1">
-          <span className="text-xs font-medium uppercase text-slate-500">Lado 1 (m)</span>
+          <span className="text-xs font-medium uppercase text-slate-500">{t.card_label_side1}</span>
           <input
             className="field w-full text-center"
             type="number"
@@ -50,7 +53,7 @@ export function MeasurementCard({ measurement, onUpdate, onDelete }: Measurement
           />
         </label>
         <label className="space-y-1">
-          <span className="text-xs font-medium uppercase text-slate-500">Lado 2 (m)</span>
+          <span className="text-xs font-medium uppercase text-slate-500">{t.card_label_side2}</span>
           <input
             className="field w-full text-center"
             type="number"
@@ -61,7 +64,7 @@ export function MeasurementCard({ measurement, onUpdate, onDelete }: Measurement
           />
         </label>
         <label className="space-y-1">
-          <span className="text-xs font-medium uppercase text-slate-500">Subtrair (m)</span>
+          <span className="text-xs font-medium uppercase text-slate-500">{t.card_label_subtract}</span>
           <input
             className="field w-full text-center"
             type="number"
@@ -76,19 +79,19 @@ export function MeasurementCard({ measurement, onUpdate, onDelete }: Measurement
       {/* Results - always visible */}
       <div className="grid grid-cols-2 gap-2 pt-3 border-t border-white/10">
         <div className="space-y-1">
-          <p className="text-xs font-medium uppercase text-slate-500">Periferique</p>
+          <p className="text-xs font-medium uppercase text-slate-500">{t.card_result_perimeter}</p>
           <p className="text-lg font-semibold text-amber-300">{formatNumber(measurement.perimeter)} m</p>
         </div>
         <div className="space-y-1">
-          <p className="text-xs font-medium uppercase text-slate-500">TOTAL M²</p>
+          <p className="text-xs font-medium uppercase text-slate-500">{t.card_result_area}</p>
           <p className="text-lg font-semibold text-white">{formatNumber(measurement.area)} m²</p>
         </div>
         <div className="space-y-1">
-          <p className="text-xs font-medium uppercase text-slate-500">Plagyp</p>
+          <p className="text-xs font-medium uppercase text-slate-500">{t.card_result_f47}</p>
           <p className="text-sm text-slate-200">{formatNumber(measurement.f47Ml)} ml</p>
         </div>
         <div className="space-y-1">
-          <p className="text-xs font-medium uppercase text-slate-500">Unidades</p>
+          <p className="text-xs font-medium uppercase text-slate-500">{t.card_result_units}</p>
           <p className="text-sm text-slate-200">{formatNumber(measurement.units)}</p>
         </div>
       </div>

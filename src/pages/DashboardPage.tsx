@@ -3,11 +3,13 @@ import { motion } from "framer-motion";
 import { ArrowRight, Calculator, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { StatCard } from "../components/ui/StatCard";
+import { useT } from "../hooks/useT";
 import { useProjectCalculations } from "../hooks/useProjectCalculations";
 import { useProjectStore } from "../stores/projectStore";
 import { formatCurrency, formatNumber } from "../utils/format";
 
 export function DashboardPage() {
+  const t = useT();
   const projectCount = useProjectStore((state) => state.projects.length);
   const { project, totals, grandTotal, pricePerSquareMeter, zones } = useProjectCalculations();
 
@@ -26,10 +28,10 @@ export function DashboardPage() {
         >
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm font-medium text-amber-400">JK Gyproc Art</p>
-              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white md:text-5xl">GyproCore</h1>
+              <p className="text-sm font-medium text-amber-400">{t.dashboard_hero_brand}</p>
+              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white md:text-5xl">{t.dashboard_hero_title}</h1>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-                Plataforma de estimativa para forro, materiais e orcamentos com calculos em tempo real.
+                {t.dashboard_hero_subtitle}
               </p>
             </div>
             <Link
@@ -37,7 +39,7 @@ export function DashboardPage() {
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-400"
             >
               <Calculator size={18} />
-              Novo calculo
+              {t.dashboard_hero_cta}
               <ArrowRight size={16} />
             </Link>
           </div>
@@ -49,26 +51,26 @@ export function DashboardPage() {
         <button
           onClick={() => setShowHero(!showHero)}
           className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-xs font-medium text-slate-300 hover:bg-white/[0.08] transition"
-          title={showHero ? "Ocultar hero" : "Mostrar hero"}
+          title={showHero ? t.dashboard_toggle_hideHero : t.dashboard_toggle_showHero}
         >
           {showHero ? <Eye size={14} /> : <EyeOff size={14} />}
-          {showHero ? "Ocultar hero" : "Mostrar hero"}
+          {showHero ? t.dashboard_toggle_hideHero : t.dashboard_toggle_showHero}
         </button>
         <button
           onClick={() => setShowStats(!showStats)}
           className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-xs font-medium text-slate-300 hover:bg-white/[0.08] transition"
-          title={showStats ? "Ocultar métricas" : "Mostrar métricas"}
+          title={showStats ? t.dashboard_toggle_hideStats : t.dashboard_toggle_showStats}
         >
           {showStats ? <Eye size={14} /> : <EyeOff size={14} />}
-          {showStats ? "Ocultar métricas" : "Mostrar métricas"}
+          {showStats ? t.dashboard_toggle_hideStats : t.dashboard_toggle_showStats}
         </button>
         <button
           onClick={() => setShowProjects(!showProjects)}
           className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-xs font-medium text-slate-300 hover:bg-white/[0.08] transition"
-          title={showProjects ? "Ocultar projeto" : "Mostrar projeto"}
+          title={showProjects ? t.dashboard_toggle_hideProject : t.dashboard_toggle_showProject}
         >
           {showProjects ? <Eye size={14} /> : <EyeOff size={14} />}
-          {showProjects ? "Ocultar projeto" : "Mostrar projeto"}
+          {showProjects ? t.dashboard_toggle_hideProject : t.dashboard_toggle_showProject}
         </button>
       </div>
 
@@ -79,10 +81,10 @@ export function DashboardPage() {
           animate={{ opacity: 1 }}
           className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
         >
-          <StatCard label="Projetos" value={projectCount} detail="Local-first MVP" />
-          <StatCard label="Area total" value={`${formatNumber(totals.totalArea)} m2`} detail={`${zones.length} zonas`} />
-          <StatCard label="Orcamento" value={formatCurrency(grandTotal, project.currency)} detail="Materiais calculados" />
-          <StatCard label="Preco / m2" value={formatCurrency(pricePerSquareMeter, project.currency)} detail="Baseado no total" />
+          <StatCard label={t.dashboard_stats_projects} value={projectCount} detail={t.dashboard_stats_projectsDetail} />
+          <StatCard label={t.dashboard_stats_totalArea} value={`${formatNumber(totals.totalArea)} m2`} detail={t.dashboard_stats_totalAreaDetail.replace("{n}", String(zones.length))} />
+          <StatCard label={t.dashboard_stats_budget} value={formatCurrency(grandTotal, project.currency)} detail={t.dashboard_stats_budgetDetail} />
+          <StatCard label={t.dashboard_stats_priceM2} value={formatCurrency(pricePerSquareMeter, project.currency)} detail={t.dashboard_stats_priceM2Detail} />
         </motion.div>
       )}
 
@@ -95,11 +97,11 @@ export function DashboardPage() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-white">Projeto ativo</h2>
+              <h2 className="text-lg font-semibold text-white">{t.dashboard_activeProject_heading}</h2>
               <p className="text-sm text-slate-400">{project.projectName}</p>
             </div>
             <Link to="/report" className="text-sm font-medium text-amber-400 hover:text-amber-300">
-              Ver resumo
+              {t.dashboard_activeProject_link}
             </Link>
           </div>
           <div className="mt-4 grid gap-3 md:grid-cols-2">

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Check, X, Pencil } from "lucide-react";
+import { useT } from "../../hooks/useT";
 
 interface InlineEditFieldProps {
   label: string;
@@ -10,6 +11,7 @@ interface InlineEditFieldProps {
 }
 
 export function InlineEditField({ label, value, onChange, type = "text", step }: InlineEditFieldProps) {
+  const t = useT();
   const [isEditing, setIsEditing] = useState(false);
   const [tempValue, setTempValue] = useState(String(value));
   const inputRef = useRef<HTMLInputElement>(null);
@@ -57,7 +59,7 @@ export function InlineEditField({ label, value, onChange, type = "text", step }:
             onClick={handleSave}
             className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition"
             type="button"
-            title="Confirmar"
+            title={t.inline_btn_confirm}
           >
             <Check size={18} />
           </button>
@@ -65,7 +67,7 @@ export function InlineEditField({ label, value, onChange, type = "text", step }:
             onClick={handleCancel}
             className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg border border-white/10 text-slate-400 hover:bg-white/5 transition"
             type="button"
-            title="Cancelar"
+            title={t.inline_btn_cancel}
           >
             <X size={18} />
           </button>

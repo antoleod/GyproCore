@@ -1,5 +1,6 @@
 import { Plus, Settings } from "lucide-react";
 import { useState } from "react";
+import { useT } from "../../hooks/useT";
 import { CalculatedZone } from "../../types/calculation";
 import { formatNumber } from "../../utils/format";
 import { InlineEditField } from "../ui/InlineEditField";
@@ -12,6 +13,8 @@ interface ZoneHeaderProps {
 }
 
 export function ZoneHeader({ zone, onUpdateZone, onAddMeasurement }: ZoneHeaderProps) {
+  const t = useT();
+
   return (
     <div className="space-y-3">
       {/* Main zone header */}
@@ -21,7 +24,7 @@ export function ZoneHeader({ zone, onUpdateZone, onAddMeasurement }: ZoneHeaderP
           <div className="flex-1">
             <input
               className="field w-full"
-              placeholder="Nome da localização"
+              placeholder={t.zone_placeholder_name}
               value={zone.zone.name}
               onChange={(e) => onUpdateZone(zone.zone.id, { name: e.target.value })}
             />
@@ -32,7 +35,7 @@ export function ZoneHeader({ zone, onUpdateZone, onAddMeasurement }: ZoneHeaderP
             className="inline-flex items-center justify-center gap-2 rounded-lg bg-amber-500 px-3 py-2 text-sm font-semibold text-slate-950 hover:bg-amber-400 transition whitespace-nowrap"
           >
             <Plus size={16} />
-            Adicionar
+            {t.zone_btn_add}
           </button>
         </div>
 
@@ -50,7 +53,7 @@ export function ZoneHeader({ zone, onUpdateZone, onAddMeasurement }: ZoneHeaderP
 
       {/* Collapsible parameters */}
       <CollapsibleSection
-        title="Parâmetros da Zona"
+        title={t.zone_params_sectionTitle}
         icon={<Settings size={16} />}
         variant="amber"
         defaultOpen={false}
@@ -58,7 +61,7 @@ export function ZoneHeader({ zone, onUpdateZone, onAddMeasurement }: ZoneHeaderP
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <div className="space-y-2">
             <InlineEditField
-              label="Espaço (m)"
+              label={t.zone_params_spacing}
               value={zone.zone.spacing}
               onChange={(val) => onUpdateZone(zone.zone.id, { spacing: val as number })}
               type="number"
@@ -67,7 +70,7 @@ export function ZoneHeader({ zone, onUpdateZone, onAddMeasurement }: ZoneHeaderP
           </div>
           <div className="space-y-2">
             <InlineEditField
-              label="Coef. %"
+              label={t.zone_params_coef}
               value={zone.zone.coefficient * 100}
               onChange={(val) => onUpdateZone(zone.zone.id, { coefficient: (val as number) / 100 })}
               type="number"
@@ -76,7 +79,7 @@ export function ZoneHeader({ zone, onUpdateZone, onAddMeasurement }: ZoneHeaderP
           </div>
           <div className="space-y-2">
             <InlineEditField
-              label="Qtd. Pav."
+              label={t.zone_params_floors}
               value={zone.zone.floorQuantity}
               onChange={(val) => onUpdateZone(zone.zone.id, { floorQuantity: val as number })}
               type="number"
@@ -85,7 +88,7 @@ export function ZoneHeader({ zone, onUpdateZone, onAddMeasurement }: ZoneHeaderP
           </div>
           <div className="space-y-2">
             <InlineEditField
-              label="Qtd. Und."
+              label={t.zone_params_units}
               value={zone.zone.unitQuantity}
               onChange={(val) => onUpdateZone(zone.zone.id, { unitQuantity: val as number })}
               type="number"

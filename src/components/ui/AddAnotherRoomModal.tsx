@@ -1,5 +1,6 @@
 import { ArrowRight, Plus, X } from "lucide-react";
 import { motion } from "framer-motion";
+import { useT } from "../../hooks/useT";
 
 interface AddAnotherRoomModalProps {
   isOpen: boolean;
@@ -8,6 +9,7 @@ interface AddAnotherRoomModalProps {
 }
 
 export function AddAnotherRoomModal({ isOpen, onAddAnother, onFinish }: AddAnotherRoomModalProps) {
+  const t = useT();
   if (!isOpen) return null;
 
   return (
@@ -34,9 +36,9 @@ export function AddAnotherRoomModal({ isOpen, onAddAnother, onFinish }: AddAnoth
 
         {/* Content */}
         <div className="space-y-2">
-          <h2 className="text-xl font-bold text-white">Deseja adicionar outra medida?</h2>
+          <h2 className="text-xl font-bold text-white">{t.modal_heading}</h2>
           <p className="text-sm text-slate-400">
-            Você pode continuar adicionando medidas agora ou terminar o levantamento.
+            {t.modal_subtitle}
           </p>
         </div>
 
@@ -47,7 +49,7 @@ export function AddAnotherRoomModal({ isOpen, onAddAnother, onFinish }: AddAnoth
             className="flex-1 rounded-lg border border-white/10 px-4 py-3 text-sm font-semibold text-white hover:bg-white/5 transition"
             type="button"
           >
-            Terminar
+            {t.modal_btn_finish}
           </button>
           <button
             onClick={onAddAnother}
@@ -55,13 +57,13 @@ export function AddAnotherRoomModal({ isOpen, onAddAnother, onFinish }: AddAnoth
             type="button"
           >
             <Plus size={16} />
-            Adicionar
+            {t.modal_btn_add}
           </button>
         </div>
 
         {/* Help text */}
         <p className="text-xs text-slate-500 text-center">
-          Pressione <kbd className="bg-white/10 px-1.5 py-0.5 rounded">ESC</kbd> para terminar
+          {t.modal_hint.replace("ESC", "")} <kbd className="bg-white/10 px-1.5 py-0.5 rounded">ESC</kbd>
         </p>
       </motion.div>
     </motion.div>

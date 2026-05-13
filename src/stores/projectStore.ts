@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { MaterialKey, MaterialPrice } from "../types/material";
 import type { Project, RoomMeasurement, Zone } from "../types/project";
+import type { Language } from "../i18n";
 import { defaultPrices, demoMeasurements, demoProject, demoZones } from "../services/demoData";
 import { createUniqueSlug } from "../utils/slug";
 
@@ -24,11 +25,13 @@ interface ProjectState {
   prices: MaterialPrice[];
   activeProjectId: string;
   globalCurrency: "BRL" | "EUR" | "USD";
+  language: Language;
   addProject: (project: Project) => void;
   createProject: (input: CreateProjectInput) => Project;
   createCalculation: (input: CreateCalculationInput) => Project;
   setActiveProject: (projectId: string) => void;
   setGlobalCurrency: (currency: "BRL" | "EUR" | "USD") => void;
+  setLanguage: (language: Language) => void;
   updateZone: (id: string, patch: Partial<Zone>) => void;
   updateMeasurement: (id: string, patch: Partial<RoomMeasurement>) => void;
   addMeasurement: (zoneId: string) => void;
@@ -51,6 +54,7 @@ export const useProjectStore = create<ProjectState>()(
       prices: defaultPrices,
       activeProjectId: demoProject.id,
       globalCurrency: "BRL",
+      language: "pt",
       addProject: (project) => set((state) => ({ projects: [...state.projects, project], activeProjectId: project.id })),
       createProject: (input) => {
         const now = new Date().toISOString();
@@ -113,6 +117,7 @@ export const useProjectStore = create<ProjectState>()(
       },
       setActiveProject: (projectId) => set({ activeProjectId: projectId }),
       setGlobalCurrency: (currency) => set({ globalCurrency: currency }),
+      setLanguage: (language) => set({ language }),
       updateZone: (id, patch) =>
         set((state) => ({
           zones: state.zones.map((zone) => (zone.id === id ? { ...zone, ...patch } : zone)),
@@ -176,6 +181,8 @@ export const useProjectStore = create<ProjectState>()(
           measurements: parsed.measurements ?? demoMeasurements,
           prices: parsed.prices ?? defaultPrices,
           activeProjectId: parsed.activeProjectId ?? demoProject.id,
+          globalCurrency: parsed.globalCurrency ?? "BRL",
+          language: parsed.language ?? "pt",
         });
       },
     }),
@@ -188,6 +195,7 @@ export const useProjectStore = create<ProjectState>()(
         prices: state.prices,
         activeProjectId: state.activeProjectId,
         globalCurrency: state.globalCurrency,
+        language: state.language,
       }),
     },
   ),

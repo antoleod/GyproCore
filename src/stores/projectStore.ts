@@ -31,6 +31,8 @@ interface ProjectState {
   updateMeasurement: (id: string, patch: Partial<RoomMeasurement>) => void;
   addMeasurement: (zoneId: string) => void;
   updatePrice: (materialKey: MaterialKey, unitPrice: number) => void;
+  updateMaterialLabel: (materialKey: MaterialKey, newLabel: string) => void;
+  deleteMaterial: (materialKey: MaterialKey) => void;
   exportSnapshot: () => string;
   importSnapshot: (snapshot: string) => void;
 }
@@ -129,6 +131,14 @@ export const useProjectStore = create<ProjectState>()(
       updatePrice: (materialKey, unitPrice) =>
         set((state) => ({
           prices: state.prices.map((price) => (price.materialKey === materialKey ? { ...price, unitPrice } : price)),
+        })),
+      updateMaterialLabel: (materialKey, newLabel) =>
+        set((state) => ({
+          prices: state.prices.map((price) => (price.materialKey === materialKey ? { ...price, label: newLabel } : price)),
+        })),
+      deleteMaterial: (materialKey) =>
+        set((state) => ({
+          prices: state.prices.filter((price) => price.materialKey !== materialKey),
         })),
       exportSnapshot: () => JSON.stringify(get(), null, 2),
       importSnapshot: (snapshot) => {

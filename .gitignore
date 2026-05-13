@@ -8,3 +8,4 @@ analyze-*.mjs
 extract-*.mjs
 vite-dev.*.log
 debug.log
+preview*.log
